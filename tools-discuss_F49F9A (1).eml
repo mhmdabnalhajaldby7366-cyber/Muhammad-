@@ -1,0 +1,395 @@
+Return-Path: <jay@staff.ietf.org>
+X-Original-To: tools-discuss@ietfa.amsl.com
+Delivered-To: tools-discuss@ietfa.amsl.com
+Received: from localhost (localhost [127.0.0.1])
+	by ietfa.amsl.com (Postfix) with ESMTP id 0B94EC17C89D
+	for <tools-discuss@ietfa.amsl.com>; Sun,  3 Nov 2024 04:56:55 -0800 (PST)
+X-Virus-Scanned: amavisd-new at amsl.com
+X-Spam-Flag: NO
+X-Spam-Score: -1.905
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.905 tagged_above=-999 required=5
+	tests=[BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+	RCVD_IN_DNSWL_BLOCKED=0.001, RCVD_IN_ZEN_BLOCKED_OPENDNS=0.001,
+	SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+	URIBL_BLOCKED=0.001, URIBL_DBL_BLOCKED_OPENDNS=0.001,
+	URIBL_ZEN_BLOCKED_OPENDNS=0.001] autolearn=ham autolearn_force=no
+Authentication-Results: ietfa.amsl.com (amavisd-new); dkim=pass (2048-bit key)
+	header.d=staff-ietf-org.20230601.gappssmtp.com
+Received: from mail.ietf.org ([50.223.129.194])
+	by localhost (ietfa.amsl.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 4OU29U5sRb9O for <tools-discuss@ietfa.amsl.com>;
+	Sun,  3 Nov 2024 04:56:51 -0800 (PST)
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
+ [IPv6:2607:f8b0:4864:20::42e])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by ietfa.amsl.com (Postfix) with ESMTPS id 2D01BC16940E
+	for <tools-discuss@ietf.org>; Sun,  3 Nov 2024 04:56:51 -0800 (PST)
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-71e49ad46b1so2827509b3a.1
+        for <tools-discuss@ietf.org>; Sun, 03 Nov 2024 04:56:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=staff-ietf-org.20230601.gappssmtp.com; s=20230601; t=1730638611;
+ x=1731243411; darn=ietf.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bv/nYVaIA0MQr60nDn4UTbeWMc4prBr1xrcq/LkcHF8=;
+        b=J/15TAw1WYlcWze3brFOCExiWYa+rqqWlwInHMXh9mrMjcI9CLhXNusPLmfbeLCalm
+         V+lG7VGG8TPwZ89tYFpm10pMsQfsO95x4szCR+O6/DX4sCZjnzXxFICB+MvmUVSubAsr
+         i59/+ERweaAi60aoprItzIqmPKyc5/0vBGiTnWKDQ6wgogMp+3G5DHG4zg7qBnEb7Xs+
+         ugru42ub8+89oy7LOlScgg6txX4JZx6fPG0A9zEFsz6M+1QhVnrHwUaPnzWcpirvpjw0
+         5qCB5pN0xvy5AD6Do60Zufln5BQii2LUo0tv5Vf1NS46K0ALXEAJy9jL+RlTIpcdmo8X
+         qZTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730638611; x=1731243411;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Bv/nYVaIA0MQr60nDn4UTbeWMc4prBr1xrcq/LkcHF8=;
+        b=T0scm94BCt+wv5n7JWHQr8HhLEbu0nVcB91KZWutO668xJHit13JyrN4dgMXFwkU2I
+         leM0AXrvDIRVGcIS26Eep+gyi8Cb6CIv6Ze4pX81RrnE7PjRWzH5qfQ6nzZXJlHwcIEz
+         99L7iZtPHD+iPMvaIjS0cC9SmzKpqZbB+UwIV02E57GD3HEitvNYOyNRU1V1ESsEWxc2
+         YUXCsuxXxLPHUGD+deAUHetuTBSQt3GInoOmmm6RZ7DyB0XMT1bwcSU0fDm460yB1rCI
+         Ar8C/UUShrCVkpHiiuMo2BdRqBQWnVfSgJ+SKc1dJLvIfXPjBriIs+d1X13OVbzdVVj4
+         CbAw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVoLCnkSiAmJFuKzLaFWI9dyRq++XoByWECx9g02naOZUFpSi57HfIHnBJzqoKBxD7eknWbt7j5HR/x7yto@ietf.org
+X-Gm-Message-State: AOJu0YwCy+0WbyFwJ82vensHiaTPWvJEfOh6ZaF+9Nk+Tyl+ZXi4z0um
+	hew/KY/I4qhRKBsYthKaOLdhOXVv1zc/nT2Fybvr9xG2AMlgPphNUrjMbne0wQEXNBup00xRUey
+	lX3Vmlg==
+X-Google-Smtp-Source: 
+ AGHT+IEnyy47UuNqQrd22lCIx/qufJFu4OKZcVZA33aFinSOF9fLKH+JC6stlTSv/ahEewgUL1sidg==
+X-Received: by 2002:a05:6a00:23ca:b0:71e:6122:5919 with SMTP id
+ d2e1a72fcca58-7206306ed56mr38441325b3a.20.1730638610527;
+        Sun, 03 Nov 2024 04:56:50 -0800 (PST)
+Received: from smtpclient.apple ([2001:67c:370:128:1c77:2179:b896:e8c1])
+        by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-720bc2eb7b1sm5603864b3a.159.2024.11.03.04.56.48
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 03 Nov 2024 04:56:50 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
+From: Jay Daley <exec-director@ietf.org>
+In-Reply-To: 
+ <DB9PR07MB77716D517A4D7C2252EA88C7D6502@DB9PR07MB7771.eurprd07.prod.outlook.com>
+Date: Sun, 3 Nov 2024 12:56:36 +0000
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F49F9A73-0289-409A-B67C-E6310F2F9096@ietf.org>
+References: 
+ <CAChr6SxsYoqh3T+LUpHYBFiN5jzghEXwGLRAfhoMuRozo3OHDA@mail.gmail.com>
+ <DB9PR07MB77713ED7F99B3D07ACEEC331D6562@DB9PR07MB7771.eurprd07.prod.outlook.com>
+ <CAChr6SwRV+8_N8S6XAU2HB3bnYyWZZVh4PRHAcxKM0in9xpHNA@mail.gmail.com>
+ <DB9PR07MB7771298FD4312E286750F4B5D6562@DB9PR07MB7771.eurprd07.prod.outlook.com>
+ <c3013617-6326-45d1-8929-51fba4ad289b@gmail.com>
+ <ZyZKexRnUk4FKVcr@faui48e.informatik.uni-erlangen.de>
+ <DB9PR07MB77716D517A4D7C2252EA88C7D6502@DB9PR07MB7771.eurprd07.prod.outlook.com>
+To: Tim Chown <Tim.Chown=40jisc.ac.uk@dmarc.ietf.org>
+X-Mailer: Apple Mail (2.3776.700.51.11.1)
+Message-ID-Hash: WYQAUICFIO2YRHAIQIHBT453E32IBOUQ
+X-Message-ID-Hash: WYQAUICFIO2YRHAIQIHBT453E32IBOUQ
+X-MailFrom: jay@staff.ietf.org
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency;
+ loop; banned-address; member-moderation;
+ header-match-tools-discuss.ietf.org-0; nonmember-moderation; administrivia;
+ implicit-dest; max-recipients; max-size; news-moderation; no-subject;
+ digests; suspicious-header
+CC: Rob Sayre <sayrer@gmail.com>,
+ Tools Team Discussion <tools-discuss@ietf.org>
+X-Mailman-Version: 3.3.9rc6
+Precedence: list
+Subject: =?utf-8?q?=5BTools-discuss=5D_Re=3A_Web_archive_quoting_issues?=
+List-Id: IETF Tools Discussion <tools-discuss.ietf.org>
+Archived-At: 
+ <https://mailarchive.ietf.org/arch/msg/tools-discuss/ilOoe541kL6F9eKsklomg4m_mE8>
+List-Archive: <https://mailarchive.ietf.org/arch/browse/tools-discuss>
+List-Help: <mailto:tools-discuss-request@ietf.org?subject=help>
+List-Owner: <mailto:tools-discuss-owner@ietf.org>
+List-Post: <mailto:tools-discuss@ietf.org>
+List-Subscribe: <mailto:tools-discuss-join@ietf.org>
+List-Unsubscribe: <mailto:tools-discuss-leave@ietf.org>
+
+Hi Tim
+
+> On 3 Nov 2024, at 12:28, Tim Chown =
+<Tim.Chown=3D40jisc.ac.uk@dmarc.ietf.org> wrote:
+
+>  It is a puzzle as to why Outlook or gmail can handle indentation =
+(without >) but the archiver cannot.
+
+The archiver is just taking the plain text content from the mail and =
+that is not indented.  For example, from your message [1] if you look at =
+the message source, the plain text content is
+
+Content-Type: text/plain; charset=3D"utf-8"
+Content-Transfer-Encoding: base64
+
+=
+77u/DQpIaSwNCg0KT24gMDEvMTEvMjAyNCwgMTc6MDgsICJSb2IgU2F5cmUiIDxzYXlyZXJAZ2=
+1h
+=
+aWwuY29tPiB3cm90ZToNCg0KWWVwLCBpdCBzZWVtcyB0byBiZSBPdXRsb29rIC8gTWljcm9zb2=
+Z0
+=
+IFNNVFAgc2VydmVyLCBhdCBsZWFzdCBpbiBtYW55IGNhc2VzLiBXZWxsIGF3YXJlIHRoYXQgdG=
+hl
+=
+c2UgYXJlIG9mdGVuIG5vdCBhIGNob2ljZS4NCg0KQ2hlY2sgdGhpcyBvdXQ6DQoNCmh0dHBzOi=
+8v
+=
+bWFpbGFyY2hpdmUuaWV0Zi5vcmcvYXJjaC9tc2cvdG9vbHMtZGlzY3Vzcy9FV09tM2g2OGVUWV=
+JQ
+=
+V1RCWC11NWpKN2ZJY0EvDQoNCnRoYW5rcywNClJvYg0KDQpZZWFoLCB0aGF0Lg0KDQpTbyB3aG=
+F0
+=
+IGlzIGl0IHRoYXQgY2F1c2UgdGhlIGVtYWlsIGNsaWVudCB0byBwcmVzZW50IHRoZSBtZXNzYW=
+dl
+=
+cyBpbmRlbnRlZCwgYnV0IHRoZSBhcmNoaXZlciBub3QgdG8/ICBJbiB0aGUgcXVvdGUgYmVsb3=
+cs
+=
+IHlvdXIgY2xpZW50IHNob3dlZCB0aGUgaW5kZW50YXRpb24uDQoNClRpbQ0KDQoNCk9uIEZyaS=
+wg
+=
+Tm92IDEsIDIwMjQgYXQgOTo1NuKAr0FNIFRpbSBDaG93biA8VGltLkNob3duQGppc2MuYWMudW=
+s8
+=
+bWFpbHRvOlRpbS5DaG93bkBqaXNjLmFjLnVrPj4gd3JvdGU6DQpIaSwNCg0KT24gMzEvMTAvMj=
+Ay
+=
+NCwgMTc6MzUsICJSb2IgU2F5cmUiIDxzYXlyZXJAZ21haWwuY29tPG1haWx0bzpzYXlyZXJAZ2=
+1h
+=
+aWwuY29tPj4gd3JvdGU6DQoNCkhpLA0KDQpJJ3ZlIG5vdGljZWQgdGhlIHdlYiBhcmNoaXZlcy=
+Bh
+=
+cmUgc2NyZXdpbmcgdXAgcXVvdGluZyBhIGJpdC4NCg0KUGxlYXNlIGVtYWlsIG1lIGRpcmVjdG=
+x5
+=
+IGlmIHlvdSB0aGluayB0aGlzIHJlcG9ydCBpcyBjcmVkaWJsZS4gSSB0aGluayBpdCdzIGZyb2=
+0g
+=
+cGVvcGxlIHdobyBkb24ndCBjb250cm9sIHRoZSBjb3Jwb3JhdGUgZW1haWwgcHJvZ3JhbXMgdG=
+hh
+=
+dCBzZW5kIHRoZSBtZXNzYWdlLCBzbyBJIGRvbid0IHdhbnQgdG8gY2FsbCB0aGVtIG91dC4NCg=
+0K
+=
+VGhlIGJ1ZyBpcyByb3VnaGx5IHRoYXQgdGhhdCBzb21ldGhpbmcgSSB3cm90ZSBsb29rcyBsaW=
+tl
+=
+IHRoZXkgd3JvdGUgaXQsIG9yIHRoYXQgc29tZXRoaW5nIHRoZXkgd3JvdGUgbG9va3MgbGlrZS=
+BJ
+=
+IHdyb3RlIGl0LiBCb3RoIGJhZCBvdXRjb21lcy4NCg0KSeKAmXZlIHNlZW4gZXhhbXBsZXMgaW=
+4g
+=
+dGhlIGFyY2hpdmUgb2YgaG93IG1lc3NhZ2VzIGZyb20gbXkgY2xpZW50IChPdXRsb29rLCBJIG=
+hh
+=
+dmUgbm8gY2hvaWNlKSBhcmUgbm90IHNob3duIGluZGVudGVkLiBJICp0aGluayogaXQgbG9va3=
+Mg
+=
+T2sgd2hlbiBwcmVzZW50ZWQgYnkgYW5vdGhlciBlbWFpbCBjbGllbnQsIGJ1dCB0aGUgYXJjaG=
+l2
+=
+ZXIgc3RyaXBzIG91dCBhbnkgaW5kZW50aW5nIChob3dldmVyIHRoYXQgaXMgaW5zZXJ0ZWQgaW=
+4g
+=
+dGhlIGZpcnN0IHBsYWNlKS4NCg0KVGhlIGxhdGVzdCBPdXRsb29rIGZvciBNYWMgaGFzIGV2ZW=
+4g
+=
+cmVtb3ZlZCB0aGUgYWJpbGl0eSB0byBzZW5kIHBsYWluIHRleHQgYnkgZGVmYXVsdCwgaXTigJ=
+lz
+=
+IG5vdyBIVE1MLg0KDQpUaGlzIGlzIHdoeSBwZW9wbGUgdG9wIHBvc3QsIHRoZXnigJlyZSBub3=
+Qg
+=
+bmVjZXNzYXJpbHkgYmVpbmcgbGF6eSwgaXTigJlzIHNpbXBseSB0byBiZSBjbGVhcmVyLg0KDQ=
+pJ
+=
+IGd1ZXNzIHlvdSBjYW4gc2VlIGhvdyB0aGlzIGFwcGVhcnMgdG8geW91LCBhbmQgaW4gdGhpcy=
+Bs
+aXN0IGFyY2hpdmUuDQoNClRpbQ0K
+
+and if you decode that then you will see there are no spaces or other =
+indents.
+
+The only way around this is for a more complicated mailarchive that =
+takes the HTML and converts it to plain text with a different algorithm.
+
+Jay
+
+[1]  =
+https://mailarchive.ietf.org/arch/msg/tools-discuss/t_rXEjndjaATCDs0CRiOmt=
+7CSLU/
+
+
+>  Tim
+>  On 02/11/2024, 15:51, "Toerless Eckert" <tte@cs.fau.de> wrote:
+>  1.
+>=20
+> Let's not damn top-posting in all cases:
+>=20
+> Top quoting is fine if it is a single coalesced response to the mail =
+it replies to.
+> If instead it it answers to multiple different points in an email, and =
+it would be
+> easier to have the context of each response point preceeding it, then =
+it is of course
+> a lot better to quote those original points.
+>=20
+> 2.
+>=20
+> We have RFCs for almost everything. I wonder if we actually do have =
+any RFC(s) to
+> describe preferred, if not required methods to carry on email threads =
+with appropriate
+> quoting. What comes to mind is a lot of severe misery for politicians =
+who managed to
+> not correctly quote included text in their scientific work (PhD thesis =
+typically) and
+> regularily have to step down from their job on this.
+>=20
+> In other words, if we had an RFC that would specificy sufficiently =
+well requirements
+> against MUA (Mail User Agent Software application) on how / what type =
+of quoting needs
+> to be supported. Maybe that would help to improve some of those really =
+obnoxious MUAs
+>=20
+> 3.
+>=20
+> Personally, i don't think that quoting just by indentation works well, =
+the amount of
+> automatic reformatting that exists in various places just makes it =
+very hard to maintain.
+>=20
+> IMHO, the primary recommended method of quoting should be lines =
+preceeded with "> ", and
+> according depth - "> ", "> > ", ...
+>=20
+> And of course the according origins of the levels. This really must be =
+in some RFC already...
+> Not ?
+>=20
+> Cheers
+>     Toerless
+>=20
+> On Sat, Nov 02, 2024 at 08:18:00AM +1300, Brian E Carpenter wrote:
+> > I don't know why the archiver strips leading whitespace, but it =
+shouldn't.
+> > Just checking:
+> >=20
+> >      This sentence was manually indented with 5 spaces on a Windows =
+machine.
+> >=20
+> > I switched to using Thunderbird and a non-corporate account while I =
+was working for IBM, since it was obvious that using a corporate system =
+was becoming hopeless.
+> >=20
+> > Can an Outlook user manually insert quote marks? In Thunderbird I =
+often use "Paste as Quotation", which actually allows me to forge =
+quotations...
+> >=20
+> > > I just typed the ">" manually here.
+> >=20
+> > =46rom memory, Thunderbird will insert a ">" on this line.
+> >=20
+> > Regards
+> >    Brian Carpenter
+> >=20
+> > On 02-Nov-24 06:13, Tim Chown wrote:
+> > > =EF=BB=BF
+> > >=20
+> > > Hi,
+> > > Tim Chown did not write this sentence.> On 01/11/2024, 17:08, "Rob
+> > > Sayre" <sayrer@gmail.com> wrote:
+> > >=20
+> > > Yep, it seems to be Outlook / Microsoft SMTP server, at least in =
+many cases. Well aware that these are often not a choice.
+> > >=20
+> > > Check this out:
+> > >=20
+> > > =
+https://mailarchive.ietf.org/arch/msg/tools-discuss/EWOm3h68eTYRPWTBX-u5jJ=
+7fIcA/<https://mailarchive.ietf.org/arch/msg/tools-discuss/EWOm3h68eTYRPWT=
+BX-u5jJ7fIcA/>
+> > >=20
+> > > thanks,
+> > >=20
+> > > Rob
+> > >=20
+> > > Yeah, that.
+> > >=20
+> > > So what is it that cause the email client to present the messages =
+indented, but the archiver not to?  In the quote below, your client =
+showed the indentation.
+> > >=20
+> > > Tim
+> > >=20
+> > > On Fri, Nov 1, 2024 at 9:56=E2=80=AFAM Tim Chown =
+<Tim.Chown@jisc.ac.uk <mailto:Tim.Chown@jisc.ac.uk>> wrote:
+> > >=20
+> > >     Hi,
+> > >=20
+> > >     On 31/10/2024, 17:35, "Rob Sayre" <sayrer@gmail.com =
+<mailto:sayrer@gmail.com>> wrote:
+> > >=20
+> > >     Hi,
+> > >=20
+> > >     I've noticed the web archives are screwing up quoting a bit.
+> > >=20
+> > >     Please email me directly if you think this report is credible. =
+I think it's from people who don't control the corporate email programs =
+that send the message, so I don't want to call them out.
+> > >=20
+> > >     The bug is roughly that that something I wrote looks like they =
+wrote it, or that something they wrote looks like I wrote it. Both bad =
+outcomes.
+> > >=20
+> > >     I=E2=80=99ve seen examples in the archive of how messages from =
+my client (Outlook, I have no choice) are not shown indented. I =
+**think** it looks Ok when presented by another email client, but the =
+archiver strips out any indenting (however that is inserted in the first =
+place).
+> > >=20
+> > >     The latest Outlook for Mac has even removed the ability to =
+send plain text by default, it=E2=80=99s now HTML.
+> > >=20
+> > >     This is why people top post, they=E2=80=99re not necessarily =
+being lazy, it=E2=80=99s simply to be clearer.
+> > >=20
+> > >     I guess you can see how this appears to you, and in this list =
+archive.
+> > >=20
+> > >     Tim
+> > >=20
+> > >=20
+> > > -----------------------------------------------
+> > > Tools-discuss mailing list -- tools-discuss@ietf.org
+> > > To unsubscribe send an email to tools-discuss-leave@ietf.org
+> > > https://mailarchive.ietf.org/arch/browse/tools-discuss/
+> > -----------------------------------------------
+> > Tools-discuss mailing list -- tools-discuss@ietf.org
+> > To unsubscribe send an email to tools-discuss-leave@ietf.org
+> > https://mailarchive.ietf.org/arch/browse/tools-discuss/
+>=20
+> --=20
+> ---
+> tte@cs.fau.de
+> -----------------------------------------------
+> Tools-discuss mailing list -- tools-discuss@ietf.org
+> To unsubscribe send an email to tools-discuss-leave@ietf.org
+> https://mailarchive.ietf.org/arch/browse/tools-discuss/
+
+
+--=20
+Jay Daley
+IETF Executive Director
+exec-director@ietf.org
+
